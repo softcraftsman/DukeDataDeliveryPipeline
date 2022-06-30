@@ -29,9 +29,7 @@ sequenceDiagram
   - Uses `Copy data` Activity to copy data to the destination
   - Notifies the external webhook on failure or success of the pipeline
 - [FunctionApp](function-app)
-  - Reads source files creating a manifest
-- ExternalWebhook
-  - External website notified by the data factory
+  - Reads source files returning a manifest including file paths and their checksums
 
 ## Azure Blob Storage Permissions
 The following storage permissions are required:
@@ -40,6 +38,3 @@ The following storage permissions are required:
   - Read Permissions on the source container  
 - Function App
   - Read Permissions on the source container
-  
-  
- 
