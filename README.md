@@ -18,17 +18,22 @@ sequenceDiagram
 ## Detailed Flow
 
 - [DDD - Duke Data Delivery Website](https://github.com/Duke-GCB/D4S2)
-  - Sends POST request with Azure Blob Storage source and destination container paths
-  - Receives a POST with manifest on sucess or a message on failure
-- [LogicApp](logic-app.json)
+  - Sends POST request 
+    - Azure Blob Storage source and destination container paths
+    - Delivery UUID - unique identifier for each delivery request
+    - Delivery ID - id of the delivery being performed
+  - Receives a POST at the end of the process 
+    - on success the POST contains a manifest of the files delivered
+    - on failure the POST contains an error message
+- [Logic App](logic-app.json)
   - Receives a POST request
   - Reads key vault for URL and authentication for webhook
   - Runs DataFactory passing request body and webhook config
-- [DataFactory](data-factory.json)
+- [Data Factory](data-factory.json)
   - Calls FunctionApp to create a manifest of files being delivered
   - Uses `Copy data` Activity to copy data to the destination
   - Notifies the external webhook on failure or success of the pipeline
-- [FunctionApp](function-app)
+- [Function App](function-app)
   - Reads source files returning a manifest including file paths and their checksums
 
 ## Azure Blob Storage Permissions
