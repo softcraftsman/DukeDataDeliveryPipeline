@@ -22,7 +22,7 @@ The following storage permissions are required:
 - Data Factory
   - Write Permissions on the sink container
   - Read Permissions on the source container  
-- Logic App
+- Function App
   - Read Permissions on the source container
   
   
