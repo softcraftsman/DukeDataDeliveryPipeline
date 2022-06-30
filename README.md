@@ -11,7 +11,7 @@ sequenceDiagram
     participant DeliveryWebsite
     
     User->>LogicApp: POST delivery request to API
-    LogicApp->>DataFactory: Runs DataDelivery pipeline
+    LogicApp->>DataFactory: Run DataDelivery pipeline
     DataFactory->>FunctionApp: Fetch list of files being delivered
     DataFactory->>AzureBlobStorage: Copy files to customer's bucket 
     DataFactory->>DeliveryWebsite: POST manifest of files delivered Delivery Website
