@@ -1,0 +1,133 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "actions": {
+            "Create_a_pipeline_run": {
+                "inputs": {
+                    "body": {
+                        "Sink_FileSystem": "@triggerBody()?['Sink_FileSystem']",
+                        "Sink_StorageAccount": "@triggerBody()?['Sink_StorageAccount']",
+                        "Sink_TopLevelFolder": "@triggerBody()?['Sink_TopLevelFolder']",
+                        "Source_FileSystem": "@triggerBody()?['Source_FileSystem']",
+                        "Source_StorageAccount": "@triggerBody()?['Source_StorageAccount']",
+                        "Source_TopLevelFolder": "@triggerBody()?['Source_TopLevelFolder']",
+                        "Webhook_Authorization": "@body('Get_Webhook_Authorization_Secret')?['value']",
+                        "Webhook_DeliveryID": "@triggerBody()?['Webhook_DeliveryID']",
+                        "Webhook_TransferUUID": "@triggerBody()?['Webhook_TransferUUID']",
+                        "Webhook_URL": "@body('Get_Webhook_URL_Secret')?['value']"
+                    },
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['azuredatafactory']['connectionId']"
+                        }
+                    },
+                    "method": "post",
+                    "path": "/subscriptions/@{encodeURIComponent('ed78a52f-a09c-49a5-863f-a93afc96ff35')}/resourcegroups/@{encodeURIComponent('dhp-san-staas-sgt-tst')}/providers/Microsoft.DataFactory/factories/@{encodeURIComponent('dhp-san-staas-ddd-tst')}/pipelines/@{encodeURIComponent('DataDelivery')}/CreateRun",
+                    "queries": {
+                        "x-ms-api-version": "2017-09-01-preview"
+                    }
+                },
+                "runAfter": {
+                    "Get_Webhook_URL_Secret": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "ApiConnection"
+            },
+            "Get_Webhook_Authorization_Secret": {
+                "inputs": {
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['keyvault']['connectionId']"
+                        }
+                    },
+                    "method": "get",
+                    "path": "/secrets/@{encodeURIComponent('Webhook-Authorization')}/value"
+                },
+                "runAfter": {},
+                "type": "ApiConnection"
+            },
+            "Get_Webhook_URL_Secret": {
+                "inputs": {
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['keyvault']['connectionId']"
+                        }
+                    },
+                    "method": "get",
+                    "path": "/secrets/@{encodeURIComponent('Webhook-URL')}/value"
+                },
+                "runAfter": {
+                    "Get_Webhook_Authorization_Secret": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "ApiConnection"
+            }
+        },
+        "contentVersion": "1.0.0.0",
+        "outputs": {},
+        "parameters": {
+            "$connections": {
+                "defaultValue": {},
+                "type": "Object"
+            }
+        },
+        "triggers": {
+            "manual": {
+                "inputs": {
+                    "schema": {
+                        "properties": {
+                            "Sink_FileSystem": {
+                                "type": "string"
+                            },
+                            "Sink_Fundcode": {
+                                "type": "string"
+                            },
+                            "Sink_StorageAccount": {
+                                "type": "string"
+                            },
+                            "Sink_TopLevelFolder": {
+                                "type": "string"
+                            },
+                            "Source_FileSystem": {
+                                "type": "string"
+                            },
+                            "Source_StorageAccount": {
+                                "type": "string"
+                            },
+                            "Source_TopLevelFolder": {
+                                "type": "string"
+                            },
+                            "Webhook_DeliveryID": {
+                                "type": "string"
+                            },
+                            "Webhook_TransferUUID": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "kind": "Http",
+                "type": "Request"
+            }
+        }
+    },
+    "parameters": {
+        "$connections": {
+            "value": {
+                "azuredatafactory": {
+                    "connectionId": "/subscriptions/ed78a52f-a09c-49a5-863f-a93afc96ff35/resourceGroups/dhp-san-staas-sgt-tst/providers/Microsoft.Web/connections/azuredatafactory",
+                    "connectionName": "azuredatafactory",
+                    "id": "/subscriptions/ed78a52f-a09c-49a5-863f-a93afc96ff35/providers/Microsoft.Web/locations/eastus2/managedApis/azuredatafactory"
+                },
+                "keyvault": {
+                    "connectionId": "/subscriptions/ed78a52f-a09c-49a5-863f-a93afc96ff35/resourceGroups/dhp-san-staas-sgt-tst/providers/Microsoft.Web/connections/keyvault",
+                    "connectionName": "keyvault",
+                    "id": "/subscriptions/ed78a52f-a09c-49a5-863f-a93afc96ff35/providers/Microsoft.Web/locations/eastus2/managedApis/keyvault"
+                }
+            }
+        }
+    }
+}
