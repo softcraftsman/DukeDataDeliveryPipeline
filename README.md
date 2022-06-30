@@ -18,7 +18,7 @@ sequenceDiagram
 ```
 
 ## Azure Blob Storage Permissions
-The following storage permissions are required
+The following storage permissions are required:
 - Data Factory
   - Write Permissions on the sink Container
   - Read Permissions on the source Container  
