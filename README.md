@@ -18,7 +18,7 @@ sequenceDiagram
 ## Detailed Flow
 
 - [DDD - Duke Data Delivery Website](https://github.com/Duke-GCB/D4S2)
-  - Sends POST request 
+  - Sends POST request containing
     - Azure Blob Storage source and destination container paths
     - Delivery UUID - unique identifier for each delivery request
     - Delivery ID - id of the delivery being performed
