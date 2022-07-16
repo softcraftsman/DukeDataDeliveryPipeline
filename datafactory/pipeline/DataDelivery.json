@@ -42,7 +42,11 @@
 					"enableStaging": false,
 					"preserve": [
 						"Attributes"
-					]
+					],
+					"skipErrorFile": {
+						"dataInconsistency": false
+					},
+					"validateDataConsistency": true
 				},
 				"inputs": [
 					{
