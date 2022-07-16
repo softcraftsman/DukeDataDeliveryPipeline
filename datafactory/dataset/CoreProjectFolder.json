@@ -1,6 +1,10 @@
 {
 	"name": "CoreProjectFolder",
 	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage1",
+			"type": "LinkedServiceReference"
+		},
 		"parameters": {
 			"FileSystem": {
 				"type": "string"
