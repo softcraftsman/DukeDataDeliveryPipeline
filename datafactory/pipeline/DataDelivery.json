@@ -118,6 +118,10 @@
 							"type": "Expression"
 						}
 					}
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureFunction1",
+					"type": "LinkedServiceReference"
 				}
 			},
 			{
