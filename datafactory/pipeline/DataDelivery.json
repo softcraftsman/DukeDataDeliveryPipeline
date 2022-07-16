@@ -1,6 +1,301 @@
 {
 	"name": "DataDelivery",
 	"properties": {
-		"annotations": []
-	}
+		"description": "Copies files from a core's container to their customer's container.",
+		"activities": [
+			{
+				"name": "Copy Data files to Recipient",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Create Manifest",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "BinarySource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"deleteFilesAfterCompletion": false
+						},
+						"formatSettings": {
+							"type": "BinaryReadSettings"
+						}
+					},
+					"sink": {
+						"type": "BinarySink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"preserve": [
+						"Attributes"
+					]
+				},
+				"inputs": [
+					{
+						"referenceName": "CoreProjectFolder",
+						"type": "DatasetReference",
+						"parameters": {
+							"FileSystem": {
+								"value": "@pipeline().parameters.Source_FileSystem",
+								"type": "Expression"
+							},
+							"TopLevelFolder": {
+								"value": "@pipeline().parameters.Source_TopLevelFolder",
+								"type": "Expression"
+							},
+							"StorageAccount": {
+								"value": "@pipeline().parameters.Source_StorageAccount",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "CustomerProjectFolder",
+						"type": "DatasetReference",
+						"parameters": {
+							"FileSystem": {
+								"value": "@pipeline().parameters.Sink_FileSystem",
+								"type": "Expression"
+							},
+							"TopLevelFolder": {
+								"value": "@pipeline().parameters.Sink_TopLevelFolder",
+								"type": "Expression"
+							},
+							"StorageAccount": {
+								"value": "@pipeline().parameters.Sink_StorageAccount",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			},
+			{
+				"name": "Create Manifest",
+				"type": "AzureFunctionActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 1,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"functionName": "ReadManifest",
+					"method": "POST",
+					"body": {
+						"storage_account": {
+							"value": "@pipeline().parameters.Source_StorageAccount",
+							"type": "Expression"
+						},
+						"file_system": {
+							"value": "@pipeline().parameters.Source_FileSystem",
+							"type": "Expression"
+						},
+						"path": {
+							"value": "@pipeline().parameters.Source_TopLevelFolder",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "Notify DDD Success",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Copy Data files to Recipient",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.05:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": {
+						"value": "@pipeline().parameters.Webhook_URL",
+						"type": "Expression"
+					},
+					"method": "POST",
+					"headers": {
+						"Authorization": {
+							"value": "@pipeline().parameters.Webhook_Authorization",
+							"type": "Expression"
+						}
+					},
+					"body": {
+						"transfer_uuid": {
+							"value": "@pipeline().parameters.Webhook_TransferUUID",
+							"type": "Expression"
+						},
+						"delivery_id": {
+							"value": "@pipeline().parameters.Webhook_DeliveryID",
+							"type": "Expression"
+						},
+						"manifest": {
+							"value": "@activity('Create Manifest').output.Response",
+							"type": "Expression"
+						}
+					},
+					"httpRequestTimeout": "00:05:00"
+				}
+			},
+			{
+				"name": "Notify DDD Copy Failure",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Copy Data files to Recipient",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.05:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": {
+						"value": "@pipeline().parameters.Webhook_URL",
+						"type": "Expression"
+					},
+					"method": "POST",
+					"headers": {
+						"Authorization": {
+							"value": "@pipeline().parameters.Webhook_Authorization",
+							"type": "Expression"
+						}
+					},
+					"body": {
+						"transfer_uuid": {
+							"value": "@pipeline().parameters.Webhook_TransferUUID",
+							"type": "Expression"
+						},
+						"delivery_id": {
+							"value": "@pipeline().parameters.Webhook_DeliveryID",
+							"type": "Expression"
+						},
+						"error_message": {
+							"value": "Copy Data Activity Failed",
+							"type": "Expression"
+						}
+					},
+					"httpRequestTimeout": "00:05:00"
+				}
+			},
+			{
+				"name": "Notify DDD Manifest Failure",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Create Manifest",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.05:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": {
+						"value": "@pipeline().parameters.Webhook_URL",
+						"type": "Expression"
+					},
+					"method": "POST",
+					"headers": {
+						"Authorization": {
+							"value": "@pipeline().parameters.Webhook_Authorization",
+							"type": "Expression"
+						}
+					},
+					"body": {
+						"transfer_uuid": {
+							"value": "@pipeline().parameters.Webhook_TransferUUID",
+							"type": "Expression"
+						},
+						"delivery_id": {
+							"value": "@pipeline().parameters.Webhook_DeliveryID",
+							"type": "Expression"
+						},
+						"error_message": {
+							"value": "Manifest Creation Activity Failed",
+							"type": "Expression"
+						}
+					},
+					"httpRequestTimeout": "00:05:00"
+				}
+			}
+		],
+		"parameters": {
+			"Source_FileSystem": {
+				"type": "string"
+			},
+			"Source_TopLevelFolder": {
+				"type": "string"
+			},
+			"Sink_FileSystem": {
+				"type": "string"
+			},
+			"Sink_TopLevelFolder": {
+				"type": "string"
+			},
+			"Source_StorageAccount": {
+				"type": "string"
+			},
+			"Sink_StorageAccount": {
+				"type": "string"
+			},
+			"Webhook_URL": {
+				"type": "string"
+			},
+			"Webhook_Authorization": {
+				"type": "string"
+			},
+			"Webhook_DeliveryID": {
+				"type": "string"
+			},
+			"Webhook_TransferUUID": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-06-30T18:29:23Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
 }
