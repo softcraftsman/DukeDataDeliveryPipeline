@@ -26,7 +26,7 @@
 					"source": {
 						"type": "BinarySource",
 						"storeSettings": {
-							"type": "AzureBlobFSReadSettings",
+							"type": "AzureBlobStorageReadSettings",
 							"recursive": true
 						},
 						"formatSettings": {
@@ -36,7 +36,7 @@
 					"sink": {
 						"type": "BinarySink",
 						"storeSettings": {
-							"type": "AzureBlobFSWriteSettings"
+							"type": "AzureBlobStorageWriteSettings"
 						}
 					},
 					"enableStaging": false,
