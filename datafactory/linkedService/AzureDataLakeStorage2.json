@@ -2,15 +2,15 @@
 	"name": "AzureDataLakeStorage2",
 	"properties": {
 		"parameters": {
-			"StorageAccountURL": {
+			"StorageAccount": {
 				"type": "string",
-				"defaultValue": "https://<accountname>.dfs.core.windows.net"
+				"defaultValue": "teststorageaccount"
 			}
 		},
 		"annotations": [],
 		"type": "AzureBlobFS",
 		"typeProperties": {
-			"url": "@{linkedService().StorageAccountURL}"
+			"url": "https://@{linkedService().StorageAcount}.dfs.windows.core.net"
 		}
 	}
 }
