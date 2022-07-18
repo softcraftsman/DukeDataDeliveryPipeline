@@ -3,8 +3,7 @@
 	"properties": {
 		"parameters": {
 			"StorageAccount": {
-				"type": "string",
-				"defaultValue": "teststorageaccount"
+				"type": "string"
 			}
 		},
 		"annotations": [],
