@@ -5,10 +5,10 @@
 		"annotations": [],
 		"type": "AzureFunction",
 		"typeProperties": {
-			"functionAppUrl": "https://duke-data-delivery-test.azurewebsites.net",
+			"functionAppUrl": "https://ddd-metadatafunc-prd.azurewebsites.net",
 			"authentication": "MSI",
 			"resourceId": "",
-			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQDRDOUQ0MDU4LTg1NTktNDY4Qi05MThCLTE1NkI5MTY3Mjk5NF85YjhiOTAzNy0xMWQyLTQ1M2YtOWY4NS02ZjNiN2NmYTdjYzEiDQp9"
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQDU4QjM1NkUyLTk3M0YtNDY4OC1CM0Q0LTQ1MkZGRjVGNTM3Ql82M2M2Mzc2Mi02OGVhLTQwNDEtYjBjNC1iYmFjODkyNzZmMjgiDQp9"
 		}
 	}
 }
