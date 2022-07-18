@@ -1,0 +1,16 @@
+{
+	"name": "SourceStorage",
+	"properties": {
+		"parameters": {
+			"StorageAccount": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "AzureBlobStorage",
+		"typeProperties": {
+			"serviceEndpoint": "https://@{linkedService().StorageAccount}.blob.core.windows.net",
+			"accountKind": "StorageV2"
+		}
+	}
+}
