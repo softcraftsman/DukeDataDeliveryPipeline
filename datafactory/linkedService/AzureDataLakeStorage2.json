@@ -9,7 +9,7 @@
 		"annotations": [],
 		"type": "AzureBlobFS",
 		"typeProperties": {
-			"url": "https://@{linkedService().StorageAccount}.dfs.windows.core.net"
+			"url": "@{concat('https://', linkedService().StorageAccount, '.dfs.core.windows.net')}"
 		}
 	}
 }
