@@ -9,7 +9,7 @@
 		"annotations": [],
 		"type": "AzureBlobStorage",
 		"typeProperties": {
-			"serviceEndpoint": "https://@{linkedService().StorageAccount}.blob.core.windows.net",
+			"serviceEndpoint": "@{concat('https://', linkedService().StorageAccount, '.dfs.core.windows.net')}",
 			"accountKind": "StorageV2"
 		}
 	}
