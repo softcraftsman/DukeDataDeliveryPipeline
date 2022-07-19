@@ -2,8 +2,14 @@
 	"name": "CustomerProjectFolder",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureDataLakeStorage1",
-			"type": "LinkedServiceReference"
+			"referenceName": "LS_StorageAccount_Param",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"StorageAccount": {
+					"value": "@dataset().StorageAccount",
+					"type": "Expression"
+				}
+			}
 		},
 		"parameters": {
 			"FileSystem": {
