@@ -1,0 +1,12 @@
+{
+	"name": "dhp-san-staas-ddd-tst",
+	"properties": {
+		"globalParameters": {
+			"DDD_FunctionApp": {
+				"type": "string",
+				"value": "duke-data-delivery-test"
+			}
+		}
+	},
+	"location": "eastus2"
+}
