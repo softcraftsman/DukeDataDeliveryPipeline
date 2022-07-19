@@ -120,8 +120,18 @@
 					}
 				},
 				"linkedServiceName": {
-					"referenceName": "AzureFunction1",
-					"type": "LinkedServiceReference"
+					"referenceName": "LS_FunctionApp_Param",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"FunctionAppName": {
+							"value": "@pipeline().globalParameters.DDD_FunctionApp",
+							"type": "Expression"
+						},
+						"KeyVaultName": {
+							"value": "@pipeline().globalParameters.DDD_KeyVault",
+							"type": "Expression"
+						}
+					}
 				}
 			},
 			{
