@@ -1,0 +1,33 @@
+{
+	"name": "LS_FunctionApp_Param",
+	"properties": {
+		"parameters": {
+			"FunctionAppName": {
+				"type": "string"
+			},
+			"KeyVaultName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "AzureFunction",
+		"typeProperties": {
+			"functionAppUrl": "\n@{concat('https://', linkedService().FunctionAppName, '.azurewebsites.net')}",
+			"functionKey": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "LS_KeyVault_Param",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"KeyVaultName": {
+							"value": "@linkedService().KeyVaultName",
+							"type": "Expression"
+						}
+					}
+				},
+				"secretName": "ddd-functionapp-key"
+			},
+			"authentication": "Anonymous"
+		}
+	}
+}
