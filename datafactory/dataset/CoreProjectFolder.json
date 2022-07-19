@@ -2,7 +2,7 @@
 	"name": "CoreProjectFolder",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "SourceStorage",
+			"referenceName": "AzureDataLakeStorage1",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
@@ -20,12 +20,12 @@
 		"type": "Binary",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobStorageLocation",
+				"type": "AzureBlobFSLocation",
 				"folderPath": {
 					"value": "@dataset().TopLevelFolder",
 					"type": "Expression"
 				},
-				"container": {
+				"fileSystem": {
 					"value": "@dataset().FileSystem",
 					"type": "Expression"
 				}
